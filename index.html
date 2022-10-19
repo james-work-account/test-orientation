@@ -9,6 +9,7 @@
 <body>
   <canvas id="myCanvas" width="360" height="450" style="border:1px solid #d3d3d3;">
 </canvas>
+  <p id="output"></p>
   <script>
 function handleOrientation(event) {
   var c = document.getElementById("myCanvas");
@@ -33,6 +34,8 @@ function handleOrientation(event) {
   ctx.fillText("Gamma: " + Math.round(event.gamma), 10, 270);
   ctx.beginPath();
   ctx.fillRect(90, 340, 180, event.gamma);
+  const output = document.getElementById("output");
+  output.innerHTML = `Alpha: ${Math.round(event.alpha)} - Beta: ${Math.round(event.beta)} - Gamma: ${Math.round(event.gamma)}`
 }
 
 if (typeof DeviceMotionEvent.requestPermission === "function") {
