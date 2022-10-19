@@ -10,35 +10,38 @@
   <p id="output">Click below to allow access to device orientation info</p>
   <button id="consent">Click me to allow access to device orientation info (iOS only... I think...)</button>
   <script>
+let consentButtonClicked = false;
 
 const output = document.getElementById("output");
-
-function handleOrientation(event) {
-  output.innerHTML = `Alpha: ${Math.round(event.alpha)} - Beta: ${Math.round(event.beta)} - Gamma: ${Math.round(event.gamma)}`;
-}
-
-let consentButtonClicked = false;
 
 const consentButton = document.getElementById("consent");
 
 consentButton.onclick = function () {
-  if (typeof DeviceMotionEvent.requestPermission === "function") {
-    // Handle iOS 13+ devices.
-    DeviceMotionEvent.requestPermission()
-      .then((state) => {
-        if (state === "granted") {
-          window.addEventListener("deviceorientation", handleOrientation);
-        } else {
-          console.error("Request to access the orientation was rejected");
-        }
-      })
-      .catch(console.error);
-  } else {
-    // Handle regular non iOS 13+ devices.
-    window.addEventListener("deviceorientation", handleOrientation);
+  if (!consentButtonClicked) {
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+      // Handle iOS 13+ devices.
+      DeviceMotionEvent.requestPermission()
+        .then((state) => {
+          if (state === "granted") {
+            window.addEventListener("deviceorientation", handleOrientation);
+          } else {
+            console.error("Request to access the orientation was rejected");
+          }
+        })
+        .catch(console.error);
+    } else {
+      // Handle regular non iOS 13+ devices.
+      window.addEventListener("deviceorientation", handleOrientation);
+    }
+    consentButtonClicked = true;
   }
 };
 
+function handleOrientation(event) {
+  output.innerHTML = `Alpha: ${Math.round(event.alpha)} - Beta: ${Math.round(
+    event.beta
+  )} - Gamma: ${Math.round(event.gamma)}`;
+}
   </script>
 </body>
 </html>
