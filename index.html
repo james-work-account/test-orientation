@@ -4,32 +4,40 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orientation test 1</title>
+  <title>Orientation test 2</title>
 </head>
 <body>
-  <p id="output">Starting text</p>
+  <p id="output">Click below to allow access to device orientation info</p>
+  <button id="consent">Click me to allow access to device orientation info (iOS only... I think...)</button>
   <script>
+
+const output = document.getElementById("output");
+
 function handleOrientation(event) {
-  event.preventDefault();
-  const output = document.getElementById("output");
-  output.innerHTML = `Alpha: ${Math.round(event.alpha)} - Beta: ${Math.round(event.beta)} - Gamma: ${Math.round(event.gamma)}`
+  output.innerHTML = `Alpha: ${Math.round(event.alpha)} - Beta: ${Math.round(event.beta)} - Gamma: ${Math.round(event.gamma)}`;
 }
 
-if (typeof DeviceMotionEvent.requestPermission === "function") {
-  // Handle iOS 13+ devices.
-  DeviceMotionEvent.requestPermission()
-    .then((state) => {
-      if (state === "granted") {
-        window.addEventListener("devicemotion", handleOrientation);
-      } else {
-        alert("Request to access the orientation was rejected");
-      }
-    })
-    .catch(alert);
-} else {
-  // Handle regular non iOS 13+ devices.
-  window.addEventListener("devicemotion", handleOrientation);
-}
+let consentButtonClicked = false;
+
+const consentButton = document.getElementById("consent");
+
+consentButton.onclick = function () {
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    // Handle iOS 13+ devices.
+    DeviceMotionEvent.requestPermission()
+      .then((state) => {
+        if (state === "granted") {
+          window.addEventListener("deviceorientation", handleOrientation);
+        } else {
+          console.error("Request to access the orientation was rejected");
+        }
+      })
+      .catch(console.error);
+  } else {
+    // Handle regular non iOS 13+ devices.
+    window.addEventListener("deviceorientation", handleOrientation);
+  }
+};
 
   </script>
 </body>
