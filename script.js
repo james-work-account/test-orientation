@@ -42,7 +42,7 @@ function handleOrientation(event) {
     consentButtonClicked = true;
   }
   output.innerHTML = `Alpha: ${a} | Beta: ${b} | Gamma: ${g}`;
-  pokeballDiv.style.transform = `rotateY(${g + startingG}deg) rotateZ(90deg)`;
+  pokeballDiv.style.transform = `rotateY(${a - startingA}deg) rotateZ(90deg)`;
 }
 
 // adapted from https://codepen.io/Sukk4/pen/VjNowW
