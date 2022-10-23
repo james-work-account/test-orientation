@@ -32,7 +32,7 @@ function handleOrientation(event) {
   const b = Math.round(event.beta);
   const g = Math.round(event.gamma);
   output.innerHTML = `Alpha: ${a} | Beta: ${b} | Gamma: ${g}`;
-  pokeballDiv.style.transform = `rotateY(${a}deg) rotateZ(${b}deg) rotateX(${g}deg)`;
+  pokeballDiv.style.transform = `rotateY(${a}deg) rotateZ(${g}deg) rotateX(${b}deg)`;
 }
 
 // adapted from https://codepen.io/Sukk4/pen/VjNowW
