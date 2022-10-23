@@ -6,8 +6,13 @@ const pokeballDiv = document.getElementById("pokeball");
 
 const consentButton = document.getElementById("consent");
 
+let startingA = 0;
+let startingB = 0;
+let startingG = 0;
+
 consentButton.onclick = function () {
   if (!consentButtonClicked) {
+    window.removeEventListener("deviceorientation", handleOrientation);
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       // Handle iOS 13+ devices.
       DeviceMotionEvent.requestPermission()
@@ -23,7 +28,6 @@ consentButton.onclick = function () {
       // Handle regular non iOS 13+ devices.
       window.addEventListener("deviceorientation", handleOrientation);
     }
-    consentButtonClicked = true;
   }
 };
 
@@ -31,8 +35,14 @@ function handleOrientation(event) {
   const a = Math.round(event.alpha);
   const b = Math.round(event.beta);
   const g = Math.round(event.gamma);
+  if (!consentButtonClicked) {
+    startingA = a;
+    startingB = b;
+    startingG = g;
+    consentButtonClicked = true;
+  }
   output.innerHTML = `Alpha: ${a} | Beta: ${b} | Gamma: ${g}`;
-  pokeballDiv.style.transform = `rotateY(${a}deg) rotateZ(${g}deg) rotateX(${b}deg)`;
+  pokeballDiv.style.transform = `rotateY(${g + startingG}deg) rotateZ(90deg)`;
 }
 
 // adapted from https://codepen.io/Sukk4/pen/VjNowW
